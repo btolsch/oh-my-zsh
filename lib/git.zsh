@@ -18,12 +18,16 @@ parse_git_dirty() {
           SUBMODULE_SYNTAX="--ignore-submodules=dirty"
     fi
     if [[ "$DISABLE_UNTRACKED_FILES_DIRTY" == "true" ]]; then
-        GIT_STATUS=$(command git status -s ${SUBMODULE_SYNTAX} -uno 2> /dev/null | tail -n1)
+        GIT_STATUS=$(command git status -s ${SUBMODULE_SYNTAX} -uno 2> /dev/null)
     else
-        GIT_STATUS=$(command git status -s ${SUBMODULE_SYNTAX} 2> /dev/null | tail -n1)
+        GIT_STATUS=$(command git status -s ${SUBMODULE_SYNTAX} 2> /dev/null)
     fi
     if [[ -n $GIT_STATUS ]]; then
-      echo "$ZSH_THEME_GIT_PROMPT_DIRTY"
+      if echo "$GIT_STATUS" | grep -E "^.[^ ]" &>/dev/null; then
+        echo "$ZSH_THEME_GIT_PROMPT_DIRTY"
+      else
+        echo "$ZSH_THEME_GIT_PROMPT_CACHED"
+      fi
     else
       echo "$ZSH_THEME_GIT_PROMPT_CLEAN"
     fi
