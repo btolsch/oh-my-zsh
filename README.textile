@@ -1,8 +1,8 @@
 !https://s3.amazonaws.com/ohmyzsh/oh-my-zsh-logo.png!
 
-@oh-my-zsh@ is an open source, community-driven framework for managing your "Zsh":http://www.zsh.org/ configuration.
+My fork of oh-my-zsh to make a small git prompt improvement. The improvement is based on older script modifications by Steve Losh (http://stevelosh.com/blog/2010/02/my-extravagant-zsh-prompt/).
 
-It comes bundled with a ton of helpful functions, helpers, plugins, themes, and a few things that make you shout…
+oh-my-zsh is an open source, community-driven framework for managing your ZSH configuration. It comes bundled with a ton of helpful functions, helpers, plugins, themes, and few things that make you shout...
 
 bq. "OH MY ZSHELL!"
 
@@ -36,7 +36,7 @@ h3. The manual way
 
 1. Clone the repository:
 
-@git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh@
+  @git clone git://github.com/btolsch/oh-my-zsh.git ~/.oh-my-zsh@
 
 2. *Optionally*, backup your existing @~/.zshrc@ file:
 
