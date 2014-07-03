@@ -23,7 +23,7 @@ parse_git_dirty() {
         GIT_STATUS=$(command git status -s ${SUBMODULE_SYNTAX} 2> /dev/null)
     fi
     if [[ -n $GIT_STATUS ]]; then
-      if echo "$GIT_STATUS" | grep -E "^.[^ ]" &>/dev/null; then
+      if echo "$GIT_STATUS" | grep -Em1 "^.[^ ]" &>/dev/null; then
         echo "$ZSH_THEME_GIT_PROMPT_DIRTY"
       else
         echo "$ZSH_THEME_GIT_PROMPT_CACHED"
