@@ -22,22 +22,27 @@ parse_git_dirty() {
     else
         GIT_STATUS=$(command git status -s ${SUBMODULE_SYNTAX} 2> /dev/null)
     fi
+    local OUTPUT=""
     if [[ -n $GIT_STATUS ]]; then
       if echo "$GIT_STATUS" | grep -Em1 "^.[^ ]" &>/dev/null; then
-        echo "$ZSH_THEME_GIT_PROMPT_DIRTY"
+        OUTPUT="$ZSH_THEME_GIT_PROMPT_DIRTY"
       else
-        echo "$ZSH_THEME_GIT_PROMPT_CACHED"
+        OUTPUT="$ZSH_THEME_GIT_PROMPT_CACHED"
       fi
     else
-      echo "$ZSH_THEME_GIT_PROMPT_CLEAN"
+      OUTPUT="$ZSH_THEME_GIT_PROMPT_CLEAN"
+    fi
+    if git status | head -2 | tail -1 | grep -Eq "Your branch is ahead"; then
+      OUTPUT="$OUTPUT$ZSH_THEME_GIT_PROMPT_AHEAD"
     fi
     STATUS=$(command git status ${FLAGS} 2> /dev/null | tail -n1)
   fi
   if [[ -n $STATUS ]]; then
     echo "$ZSH_THEME_GIT_PROMPT_DIRTY"
   else
-    echo "$ZSH_THEME_GIT_PROMPT_CLEAN"
+    OUTPUT="$ZSH_THEME_GIT_PROMPT_CLEAN"
   fi
+  echo "$OUTPUT"
 }
 
 # get the difference between the local and remote branches
