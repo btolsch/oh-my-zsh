@@ -18,4 +18,8 @@ ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg_bold[yellow]%}!"
 ZSH_THEME_GIT_PROMPT_CACHED="%{$fg_bold[yellow]%}?"
 ZSH_THEME_GIT_PROMPT_CLEAN=""
 
+ZSH_THEME_GIT_PROMPT_AHEAD_REMOTE=" %{$fg_bold[red]%}(+)"
 ZSH_THEME_GIT_PROMPT_AHEAD=" %{$fg_bold[yellow]%}++"
+ZSH_THEME_GIT_PROMPT_BEHIND=" %{$fg_bold[yellow]%}--"
+ZSH_THEME_GIT_PROMPT_DIVERGED=" %{$fg_bold[yellow]%}<>"
+ZSH_THEME_GIT_PROMPT_EVEN=" %{$fg_bold[yellow]%}=="

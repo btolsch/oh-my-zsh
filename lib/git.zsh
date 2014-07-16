@@ -32,8 +32,24 @@ parse_git_dirty() {
     else
       OUTPUT="$ZSH_THEME_GIT_PROMPT_CLEAN"
     fi
-    if git status | head -2 | tail -1 | grep -Eq "Your branch is ahead"; then
-      OUTPUT="$OUTPUT$ZSH_THEME_GIT_PROMPT_AHEAD"
+    ref=$(command git symbolic-ref HEAD 2> /dev/null) || \
+    ref=$(command git rev-parse --short HEAD 2> /dev/null)
+	ref=${ref#refs/heads/}
+    if [ "$ref" != "master" ]; then
+      master_ahead=$(git log -1 --oneline ${ref}..master)
+      ref_ahead=$(git log -1 --oneline master..$ref)
+      if [ -n "$master_ahead" -a -n "$ref_ahead" ]; then
+        OUTPUT="$OUTPUT$ZSH_THEME_GIT_PROMPT_DIVERGED"
+      elif [ -n "$master_ahead" ]; then
+        OUTPUT="$OUTPUT$ZSH_THEME_GIT_PROMPT_BEHIND"
+      elif [ -n "$ref_ahead" ]; then
+        OUTPUT="$OUTPUT$ZSH_THEME_GIT_PROMPT_AHEAD"
+      else
+        OUTPUT="$OUTPUT$ZSH_THEME_GIT_PROMPT_EVEN"
+      fi
+    fi
+    if [ -n $(git branch -v | sed -n 's/^.*[0-9a-f]\+\s\+\[ahead.*$/y/p') ]; then
+      OUTPUT="$OUTPUT$ZSH_THEME_GIT_PROMPT_AHEAD_REMOTE"
     fi
   else
     OUTPUT="$ZSH_THEME_GIT_PROMPT_CLEAN"
