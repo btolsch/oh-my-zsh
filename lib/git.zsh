@@ -48,7 +48,8 @@ parse_git_dirty() {
         OUTPUT="$OUTPUT$ZSH_THEME_GIT_PROMPT_EVEN"
       fi
     fi
-    if [ -n $(git branch -v | sed -n 's/^.*[0-9a-f]\+\s\+\[ahead.*$/y/p') ]; then
+    remote=$(git branch -v | sed -n 's/^.*[0-9a-f]\+\s\+\[ahead.*$/y/p')
+    if echo $remote | grep -Eq "^y$"; then
       OUTPUT="$OUTPUT$ZSH_THEME_GIT_PROMPT_AHEAD_REMOTE"
     fi
   else
