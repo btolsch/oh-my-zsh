@@ -16,7 +16,8 @@ elif grep-flag-available --exclude=.cvs; then
 fi
 
 # export grep settings
-alias grep="grep $GREP_OPTIONS"
+# GREP_OPTIONS deprecated
+# alias grep="grep $GREP_OPTIONS"
 
 # clean up
 unset GREP_OPTIONS
