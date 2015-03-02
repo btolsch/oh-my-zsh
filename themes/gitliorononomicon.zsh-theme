@@ -10,7 +10,7 @@ function virtualenv_info {
 main_color='038'
 attn_color='003'
 alert_color='124'
-PROMPT='
+PROMPT='%(?..%{$FG[$alert_color]%}o_O %?)
 %{$FG[$main_color]%}%n%{$reset_color%}@%{$FG[$attn_color]%}%m%{$reset_color%}:%{$FG[$main_color]%}${PWD/#$HOME/~}%{$reset_color%}$(git_prompt_info)
 %{$FG[$main_color]%}$(virtualenv_info)$(prompt_char)::%{$reset_color%} '
 
