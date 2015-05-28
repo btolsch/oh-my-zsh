@@ -15,6 +15,9 @@ function chpwd() {
 
 # Changes directory to the last working directory.
 function lwd() {
+	#puts ranger-given path when launching shell into lwd cache
+	#parent=$(ps -o pid,comm x | grep $PPID | cut -d ' ' -f 2)
+	#[[ $? = 0 ]] && [[ $parent = 'ranger' ]] && chpwd
 	[[ ! -r "$cache_file" ]] || cd `cat "$cache_file"`
 }
 
