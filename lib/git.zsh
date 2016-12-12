@@ -20,12 +20,16 @@ function parse_git_dirty() {
     if [[ "$DISABLE_UNTRACKED_FILES_DIRTY" == "true" ]]; then
       FLAGS+='--untracked-files=no'
     fi
-    STATUS=$(command git status ${FLAGS} 2> /dev/null | tail -n1)
+    STATUS=$(command git status ${FLAGS} 2> /dev/null)
   fi
-  if [[ -n $STATUS ]]; then
-    echo "$ZSH_THEME_GIT_PROMPT_DIRTY"
+  if echo "$STATUS" | sed -n '/^.[^ ]/q1'; then
+    if [[ -n "$STATUS" ]]; then
+      echo "$ZSH_THEME_GIT_PROMPT_CACHED"
+    else
+      echo "$ZSH_THEME_GIT_PROMPT_CLEAN"
+    fi
   else
-    echo "$ZSH_THEME_GIT_PROMPT_CLEAN"
+    echo "$ZSH_THEME_GIT_PROMPT_DIRTY"
   fi
 }
 
@@ -77,8 +81,8 @@ function git_current_branch() {
 # Gets the number of commits ahead from remote
 function git_commits_ahead() {
   if command git rev-parse --git-dir &>/dev/null; then
-    local commits="$(git rev-list --count @{upstream}..HEAD)"
-    if [[ "$commits" != 0 ]]; then
+    local commits="$(git rev-list --count @{upstream}..HEAD 2> /dev/null)"
+    if [[ "$commits" != 0 && -n "$commits" ]]; then
       echo "$ZSH_THEME_GIT_COMMITS_AHEAD_PREFIX$commits$ZSH_THEME_GIT_COMMITS_AHEAD_SUFFIX"
     fi
   fi
@@ -87,8 +91,8 @@ function git_commits_ahead() {
 # Gets the number of commits behind remote
 function git_commits_behind() {
   if command git rev-parse --git-dir &>/dev/null; then
-    local commits="$(git rev-list --count HEAD..@{upstream})"
-    if [[ "$commits" != 0 ]]; then
+    local commits="$(git rev-list --count HEAD..@{upstream} 2> /dev/null)"
+    if [[ "$commits" != 0 && -n "$commits" ]]; then
       echo "$ZSH_THEME_GIT_COMMITS_BEHIND_PREFIX$commits$ZSH_THEME_GIT_COMMITS_BEHIND_SUFFIX"
     fi
   fi
