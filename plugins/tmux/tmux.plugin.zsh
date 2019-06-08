@@ -61,17 +61,9 @@ function _zsh_tmux_plugin_run() {
   [[ "$ZSH_TMUX_ITERM2" == "true" ]] && tmux_cmd+=(-CC)
 
   # Try to connect to an existing session.
-  [[ "$ZSH_TMUX_AUTOCONNECT" == "true" ]] && $tmux_cmd attach
-
-  # If failed, just run tmux, fixing the TERM variable if requested.
-  if [[ $? -ne 0 ]]; then
-    [[ "$ZSH_TMUX_FIXTERM" == "true" ]] && tmux_cmd+=(-f "$_ZSH_TMUX_FIXED_CONFIG")
-    $tmux_cmd new-session
-  fi
-
-  if [[ "$ZSH_TMUX_AUTOQUIT" == "true" ]]; then
-    exit
-  fi
+  ID="$(tmux ls | grep -vm1 attached | cut -d: -f1)"
+  [[ -z "$ID" ]] && (\tmux `[[ "$ZSH_TMUX_ITERM2" == "true" ]] && echo '-CC '` `[[ "$ZSH_TMUX_FIXTERM" == "true" ]] && echo '-f '$_ZSH_TMUX_FIXED_CONFIG` new-session) || (\tmux `[[ "$ZSH_TMUX_ITERM2" == "true" ]] && echo '-CC '` attach-session -t "$ID")
+  [[ "$ZSH_TMUX_AUTOQUIT" == "true" ]] && exit
 }
 
 # Use the completions for tmux for our function
