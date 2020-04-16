@@ -38,6 +38,8 @@ alias tkss='tmux kill-session -t'
 : ${ZSH_TMUX_CONFIG:=$HOME/.tmux.conf}
 # Set -u option to support unicode
 : ${ZSH_TMUX_UNICODE:=false}
+# Set to change the binary name used for the base tmux command.
+: ${ZSH_TMUX_COMMAND:=tmux}
 
 # Determine if the terminal supports 256 colors
 if [[ $terminfo[colors] == 256 ]]; then
@@ -57,12 +59,12 @@ fi
 # Wrapper function for tmux.
 function _zsh_tmux_plugin_run() {
   if [[ -n "$@" ]]; then
-    command tmux "$@"
+    command $ZSH_TMUX_COMMAND "$@"
     return $?
   fi
 
   local -a tmux_cmd
-  tmux_cmd=(command tmux)
+  tmux_cmd=(command $ZSH_TMUX_COMMAND)
   [[ "$ZSH_TMUX_ITERM2" == "true" ]] && tmux_cmd+=(-CC)
   [[ "$ZSH_TMUX_UNICODE" == "true" ]] && tmux_cmd+=(-u)
 
